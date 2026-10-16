@@ -23,7 +23,7 @@ export function UpdateManager({ children }) {
   }, [swRef]);
   useEffect(() => {
     let mounted = true;
-    const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+    const swUrl = `${import.meta.env.BASE_URL}service-worker.js`;
     const onUpdate = () => {
       if (mounted) {
         logger.log('Update available');

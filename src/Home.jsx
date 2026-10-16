@@ -61,7 +61,7 @@ function Home() {
         Online Multiplayer
       </Button>
 
-      {process.env.REACT_APP_LOCAL_AI && (
+      {import.meta.env.VITE_LOCAL_AI && (
         <>
           <Box m={1} />
           <Button

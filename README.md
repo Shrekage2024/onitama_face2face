@@ -61,10 +61,14 @@ docker run -dp 80:8080 --name onitama --rm onitama
 
 ## Development
 
-Requires Rust (nightly) and Node (v14)  
+Requires Rust (stable, with the `wasm32-unknown-unknown` target) and Node (v22, see `.nvmrc`).
+The frontend is built with [Vite](https://vite.dev/).
 
+1. Install the wasm target with `rustup target add wasm32-unknown-unknown`
 1. Install dependencies with `yarn install`  
-1. Start the backend with `cargo run onitamaserver`
+1. Build the game library to WebAssembly with `yarn build-native-dev`
+   (re-run after changing Rust code in `onitamalib`)
+1. Start the backend with `cargo run --bin onitamaserver`
 1. Start the frontend with `yarn start`
 1. Visit [http://localhost:3000](http://localhost:3000) to see the app
 

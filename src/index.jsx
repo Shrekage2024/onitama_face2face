@@ -5,7 +5,10 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
 import { HashRouter } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
-import 'typeface-roboto';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import theme from './theme';
 import Loading from './Loading';
 import Home from './Home';
@@ -53,7 +56,7 @@ root.render(
                 <RemoteGame />
               </Suspense>
             </Route>
-            {process.env.REACT_APP_LOCAL_AI ? (
+            {import.meta.env.VITE_LOCAL_AI ? (
               <Route path="/ai/:difficulty">
                 <Suspense fallback={<Loading />}>
                   <SinglePlayerGame />
@@ -69,14 +72,14 @@ root.render(
             <Route path="/ai">
               <AiSelect />
             </Route>
-            {process.env.REACT_APP_LOCAL_AI && (
+            {import.meta.env.VITE_LOCAL_AI && (
               <Route path="/t/:difficulty">
                 <Suspense fallback={<Loading />}>
                   <TrainingGame />
                 </Suspense>
               </Route>
             )}
-            {process.env.REACT_APP_LOCAL_AI && (
+            {import.meta.env.VITE_LOCAL_AI && (
               <Route path="/t">
                 <TrainingSelect />
               </Route>

@@ -17,7 +17,7 @@ import DisabledIcon from '@material-ui/icons/VisibilityOff';
 
 import { Link } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
-import { listCardSets } from '../onitamalib';
+import { listCardSets } from 'onitamalib';
 import GameCard from '../GameBoard/GameCard';
 
 const useStyles = makeStyles((theme) => ({

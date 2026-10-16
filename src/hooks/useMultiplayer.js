@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router';
 import { WEBSOCKET_BASE } from '../config';
-import { MultiplayerGame } from '../onitamalib';
+import { MultiplayerGame } from 'onitamalib';
 import logger from '../logger';
 import onEvent from '../events';
 import getMeta from '../meta';

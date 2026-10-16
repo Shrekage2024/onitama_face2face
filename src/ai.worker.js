@@ -1,4 +1,4 @@
-const onitamaLib = import('./onitamalib');
+const onitamaLib = import('onitamalib');
 
 onmessage = async (e) => {
   const { agentMove } = await onitamaLib;
