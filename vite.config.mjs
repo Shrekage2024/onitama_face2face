@@ -5,6 +5,8 @@ import wasm from 'vite-plugin-wasm';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  // Sub-path the app is served from, e.g. /onitama_face2face/ on GitHub Pages
+  base: process.env.BASE_PATH || '/',
   plugins: [
     react(),
     wasm(),

@@ -62,15 +62,18 @@ function Home() {
       >
         Face to Face (Tablet)
       </Button>
-      <Button
-        component={Link}
-        to="/r/"
-        variant="contained"
-        color="primary"
-        className={classes.button}
-      >
-        Online Multiplayer
-      </Button>
+      {/* Online play needs onitamaserver, which static hosting doesn't have */}
+      {!import.meta.env.VITE_STATIC_HOST && (
+        <Button
+          component={Link}
+          to="/r/"
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Online Multiplayer
+        </Button>
+      )}
 
       {import.meta.env.VITE_LOCAL_AI && (
         <>
