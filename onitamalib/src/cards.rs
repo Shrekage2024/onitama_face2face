@@ -3,10 +3,7 @@ use crate::models::{Card, CardDirection, CardSet, Point};
 impl Card {
     pub fn moves(&self) -> Vec<Point> {
         match self {
-            Card::Tiger => vec![
-                Point { x: 0, y: -2 }, 
-                Point { x: 0, y: 1 }
-            ],
+            Card::Tiger => vec![Point { x: 0, y: -2 }, Point { x: 0, y: 1 }],
             Card::Dragon => vec![
                 Point { x: -2, y: -1 },
                 Point { x: -1, y: 1 },
@@ -430,17 +427,16 @@ impl CardSet {
             CardSet::PromotionalPack => vec![
                 Card::Sheep,
                 Card::Goat,
-                Card::Lobster, 
-                Card::Steer, 
-                Card::Centipede, 
-                Card::Hornet, 
+                Card::Lobster,
+                Card::Steer,
+                Card::Centipede,
+                Card::Hornet,
                 Card::Serow,
-                Card::Cat, 
+                Card::Cat,
                 Card::Nessie,
                 Card::Butterfly,
                 Card::Moth,
             ],
-            
         }
     }
 }

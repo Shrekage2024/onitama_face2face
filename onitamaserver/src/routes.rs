@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use crate::rooms::{OnitamaServer, RoomWs};
-use crate::utils::{get_identifier, get_useragent, get_ip};
+use crate::utils::{get_identifier, get_ip, get_useragent};
 use actix::prelude::*;
 use actix_web::{error, web, Error, HttpRequest, HttpResponse};
 use actix_web_actors::ws;
