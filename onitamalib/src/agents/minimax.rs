@@ -1,4 +1,4 @@
-use instant::{Duration, Instant};
+use web_time::{Duration, Instant};
 
 use crate::models::{GameState, Move, Player};
 

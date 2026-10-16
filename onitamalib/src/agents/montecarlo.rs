@@ -1,7 +1,7 @@
 use std::cell::Cell;
 
-use instant::{Duration, Instant};
 use rand::prelude::*;
+use web_time::{Duration, Instant};
 
 use crate::{alphabeta, Board, GameState, Move, Player};
 

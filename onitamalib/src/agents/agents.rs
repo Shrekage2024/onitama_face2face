@@ -1,6 +1,6 @@
 use enum_iterator::IntoEnumIterator;
-use instant::Duration;
 use serde::{Deserialize, Serialize};
+use web_time::Duration;
 
 use crate::agents::{alphabeta, greedy, minimax, montecarlo};
 use crate::{GameState, Move};
@@ -28,6 +28,7 @@ impl AiAgent {
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "web")] {
+        use gloo_utils::format::JsValueSerdeExt;
         use wasm_bindgen::prelude::*;
         use crate::MoveRequest;
 
