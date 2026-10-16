@@ -44,6 +44,15 @@ function Home() {
       </Button>
       <Button
         component={Link}
+        to="/f/"
+        variant="contained"
+        color="primary"
+        className={classes.button}
+      >
+        Face to Face (Tablet)
+      </Button>
+      <Button
+        component={Link}
         to="/r/"
         variant="contained"
         color="primary"

@@ -16,6 +16,7 @@ function GameGrid({
   lastMove,
   redOriented,
   dstMoveRankings,
+  flipBluePieces,
 }) {
   return (
     <Paper
@@ -39,6 +40,7 @@ function GameGrid({
               isValid={isMoveValid(x, y)}
               key={`${x}-${y}`}
               lastMove={lastMove}
+              flipBluePieces={flipBluePieces}
               ranking={(dstMoveRankings[`${x},${y}`] || 0) * (redOriented ? 1 : -1)}
             />
           ))}
@@ -51,6 +53,7 @@ GameGrid.defaultProps = {
   src: null,
   turn: null,
   lastMove: null,
+  flipBluePieces: false,
 };
 GameGrid.propTypes = {
   redOriented: PropTypes.bool.isRequired,
@@ -69,6 +72,8 @@ GameGrid.propTypes = {
     src: PointPropType.isRequired,
   }),
   dstMoveRankings: PropTypes.objectOf(PropTypes.number).isRequired,
+  // Rotate blue pieces 180 degrees, for players sitting across from each other
+  flipBluePieces: PropTypes.bool,
 };
 
 export default GameGrid;

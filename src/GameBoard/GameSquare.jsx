@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   blueBase: {
     backgroundColor: Color(theme.palette.background.paper).mix(Color('#2196f3'), 0.1).hex(),
   },
+  flipped: {
+    transform: 'rotate(180deg)',
+  },
   rankMarker: {
     position: 'absolute',
     transform: 'translate(-20px, -20px)',
@@ -71,7 +74,19 @@ function Star() {
   );
 }
 
-function GameSquare({ tile, x, y, src, setSrc, turn, move, isValid, lastMove, ranking }) {
+function GameSquare({
+  tile,
+  x,
+  y,
+  src,
+  setSrc,
+  turn,
+  move,
+  isValid,
+  lastMove,
+  ranking,
+  flipBluePieces,
+}) {
   const classes = useStyles();
   const player = tilePlayer[tile];
   const activePlayer = turn === player;
@@ -107,7 +122,11 @@ function GameSquare({ tile, x, y, src, setSrc, turn, move, isValid, lastMove, ra
     >
       {ranking < -1000000 && <Skull />}
       {ranking > 1000000 && <Star />}
-      {icons[tile]}
+      {flipBluePieces && player === 'Blue' ? (
+        <Box className={classes.flipped}>{icons[tile]}</Box>
+      ) : (
+        icons[tile]
+      )}
     </Paper>
   );
 }
@@ -115,6 +134,7 @@ GameSquare.defaultProps = {
   src: null,
   turn: null,
   lastMove: null,
+  flipBluePieces: false,
 };
 GameSquare.propTypes = {
   tile: PropTypes.oneOf(['Empty', 'BluePawn', 'BlueKing', 'RedPawn', 'RedKing']).isRequired,
@@ -133,6 +153,7 @@ GameSquare.propTypes = {
     src: PointPropType.isRequired,
   }),
   ranking: PropTypes.number.isRequired,
+  flipBluePieces: PropTypes.bool,
 };
 
 export default GameSquare;
