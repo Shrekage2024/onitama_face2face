@@ -1,23 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import GameCard from './GameCard';
 
 function GameHand({
   cards,
   setCard,
-  selectedCard,
+  selectedCard = null,
   canMove,
   enabled,
   discard,
   spare,
   isPlayerTurn,
-  inverted,
+  inverted = false,
 }) {
   const theme = useTheme();
-  const showSpare = useMediaQuery(theme.breakpoints.down('sm')) && !isPlayerTurn;
+  const showSpare = useMediaQuery(theme.breakpoints.down('md')) && !isPlayerTurn;
   return (
-    <Box display="flex" flexDirection={inverted ? 'row-reverse' : 'row'} style={{ gap: '8px' }}>
+    <Box
+      style={{ gap: '8px' }}
+      sx={{
+        display: 'flex',
+        flexDirection: inverted ? 'row-reverse' : 'row',
+      }}
+    >
       {showSpare && (
         <GameCard
           setCard={setCard}
@@ -49,32 +53,5 @@ function GameHand({
     </Box>
   );
 }
-const CardPropType = PropTypes.shape({
-  card: PropTypes.string.isRequired,
-  moves: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  direction: PropTypes.string.isRequired,
-});
-GameHand.defaultProps = {
-  selectedCard: null,
-  inverted: false,
-};
-GameHand.propTypes = {
-  setCard: PropTypes.func.isRequired,
-  selectedCard: PropTypes.shape({
-    card: PropTypes.string.isRequired,
-  }),
-  canMove: PropTypes.bool.isRequired,
-  discard: PropTypes.func.isRequired,
-  cards: PropTypes.arrayOf(CardPropType).isRequired,
-  spare: CardPropType.isRequired,
-  enabled: PropTypes.bool.isRequired,
-  isPlayerTurn: PropTypes.bool.isRequired,
-  inverted: PropTypes.bool,
-};
 
 export default GameHand;

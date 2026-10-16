@@ -1,18 +1,21 @@
-import React from 'react';
-import { Box, Button, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+import { Link } from 'react-router';
 import useStyles from './menuStyles';
 import GithubRibbon from './GithubRibbon';
 import { useAppUpdater } from './updateManager';
 
 function Home() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   useAppUpdater();
   return (
     <Box className={classes.outer}>
       <GithubRibbon />
       <Typography variant="h2">Onitama App</Typography>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/help"
@@ -22,7 +25,11 @@ function Home() {
       >
         How to Play
       </Button>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/ai"
@@ -32,7 +39,11 @@ function Home() {
       >
         Single Player
       </Button>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/l/"
@@ -44,6 +55,15 @@ function Home() {
       </Button>
       <Button
         component={Link}
+        to="/f/"
+        variant="contained"
+        color="primary"
+        className={classes.button}
+      >
+        Face to Face (Tablet)
+      </Button>
+      <Button
+        component={Link}
         to="/r/"
         variant="contained"
         color="primary"
@@ -52,9 +72,13 @@ function Home() {
         Online Multiplayer
       </Button>
 
-      {process.env.REACT_APP_LOCAL_AI && (
+      {import.meta.env.VITE_LOCAL_AI && (
         <>
-          <Box m={1} />
+          <Box
+            sx={{
+              m: 1,
+            }}
+          />
           <Button
             component={Link}
             to="/t"
@@ -66,7 +90,11 @@ function Home() {
           </Button>
         </>
       )}
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/settings"

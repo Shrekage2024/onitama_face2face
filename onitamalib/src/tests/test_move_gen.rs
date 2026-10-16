@@ -20,7 +20,11 @@ fn test_legal_moves_all_valid() {
     // Every generated move should be valid
     for game_move in moves {
         let result = board.try_move(game_move);
-        assert!(result.is_ok(), "Generated move should be valid: {:?}", game_move);
+        assert!(
+            result.is_ok(),
+            "Generated move should be valid: {:?}",
+            game_move
+        );
     }
 }
 
@@ -52,11 +56,7 @@ fn test_legal_moves_only_from_player_pieces() {
     board.turn = Player::Red;
 
     let moves = board.legal_moves();
-    let red_positions: Vec<Point> = board
-        .player_pieces()
-        .iter()
-        .filter_map(|&p| p)
-        .collect();
+    let red_positions: Vec<Point> = board.player_pieces().iter().filter_map(|&p| p).collect();
 
     for game_move in moves {
         if let Move::Move { src, .. } = game_move {
@@ -76,7 +76,11 @@ fn test_legal_moves_no_out_of_bounds() {
 
     for game_move in moves {
         if let Move::Move { dst, .. } = game_move {
-            assert!(dst.in_bounds(), "Destination should be in bounds: {:?}", dst);
+            assert!(
+                dst.in_bounds(),
+                "Destination should be in bounds: {:?}",
+                dst
+            );
         }
     }
 }
@@ -87,11 +91,7 @@ fn test_legal_moves_no_friendly_fire() {
     board.turn = Player::Red;
 
     let moves = board.legal_moves();
-    let player_positions: Vec<Point> = board
-        .player_pieces()
-        .iter()
-        .filter_map(|&p| p)
-        .collect();
+    let player_positions: Vec<Point> = board.player_pieces().iter().filter_map(|&p| p).collect();
 
     for game_move in moves {
         if let Move::Move { dst, .. } = game_move {
@@ -172,7 +172,11 @@ fn test_random_legal_move_is_valid() {
     for _ in 0..10 {
         let game_move = board.random_legal_move(&mut rng);
         let result = board.try_move(game_move);
-        assert!(result.is_ok(), "Random move should be valid: {:?}", game_move);
+        assert!(
+            result.is_ok(),
+            "Random move should be valid: {:?}",
+            game_move
+        );
     }
 }
 
@@ -187,12 +191,13 @@ fn test_random_legal_move_variety() {
     }
 
     // Should have some variety (not all the same)
-    let unique_moves: std::collections::HashSet<String> = moves
-        .iter()
-        .map(|m| format!("{:?}", m))
-        .collect();
+    let unique_moves: std::collections::HashSet<String> =
+        moves.iter().map(|m| format!("{:?}", m)).collect();
 
-    assert!(unique_moves.len() > 1, "Should generate different random moves");
+    assert!(
+        unique_moves.len() > 1,
+        "Should generate different random moves"
+    );
 }
 
 #[test]

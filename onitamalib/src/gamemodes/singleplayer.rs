@@ -1,3 +1,4 @@
+use gloo_utils::format::JsValueSerdeExt;
 use rand::prelude::*;
 use serde::Serialize;
 use serde_cbor::ser;

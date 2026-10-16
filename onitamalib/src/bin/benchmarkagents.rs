@@ -4,7 +4,7 @@ use std::thread;
 
 use enum_iterator::IntoEnumIterator;
 use indicatif::ProgressBar;
-use instant::Duration;
+use web_time::Duration;
 
 use onitamalib::{AiAgent, GameState, Player};
 use std::thread::JoinHandle;

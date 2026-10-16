@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -6,21 +6,21 @@ import {
   CardContent,
   CardHeader,
   IconButton,
-  makeStyles,
   Typography,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import EnabledIcon from '@material-ui/icons/Visibility';
-import DisabledIcon from '@material-ui/icons/VisibilityOff';
+} from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
+import { Alert, AlertTitle } from '@mui/material';
+import EnabledIcon from '@mui/icons-material/Visibility';
+import DisabledIcon from '@mui/icons-material/VisibilityOff';
 
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Marquee from 'react-fast-marquee';
-import { listCardSets } from '../onitamalib';
+import { listCardSets } from 'onitamalib';
 import GameCard from '../GameBoard/GameCard';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   card: {
     backgroundColor: theme.palette.background.default,
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 function Settings() {
   const theme = useTheme();
   const largeScreen = useMediaQuery(theme.breakpoints.up('md'));
-  const styles = useStyles();
+  const { classes: styles } = useStyles();
   const cardSets = useMemo(() => listCardSets(), []);
   const storedDisabledCardSetIds = useMemo(() => {
     const rawCardSetIds = localStorage.getItem('disabled_card_sets');
@@ -55,11 +55,30 @@ function Settings() {
     return enabledSets.reduce((accumulator, set) => accumulator + set.cards.length, 0);
   }, [disabledCardSetIds, cardSets]);
   return (
-    <Box m={2}>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Box maxWidth="720px" width="100%">
+    <Box
+      sx={{
+        m: 2,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            maxWidth: '720px',
+            width: '100%',
+          }}
+        >
           <Typography variant="h4">Settings</Typography>
-          <Box my={2} />
+          <Box
+            sx={{
+              my: 2,
+            }}
+          />
           <Typography variant="h5">Card Sets</Typography>
           <Typography variant="body1">
             Turn sets of cards on or off (currently only works for Single Player and Local
@@ -72,7 +91,12 @@ function Settings() {
             </Alert>
           )}
           {cardSets.map(({ id, name, cards }) => (
-            <Box my={1} key={id}>
+            <Box
+              key={id}
+              sx={{
+                my: 1,
+              }}
+            >
               <Card variant="outlined" className={styles.card}>
                 <CardHeader
                   title={name}
@@ -80,6 +104,7 @@ function Settings() {
                     <IconButton
                       aria-label={disabledCardSetIds.includes(id) ? 'Enable set' : 'Disable set'}
                       onClick={() => toggleCardSet(id)}
+                      size="large"
                     >
                       {disabledCardSetIds.includes(id) ? <DisabledIcon /> : <EnabledIcon />}
                     </IconButton>
@@ -88,7 +113,12 @@ function Settings() {
                 <CardContent>
                   <Marquee speed={25} play={cards.length > 4 || !largeScreen}>
                     {cards.map((card) => (
-                      <Box mx={1} key={card.card}>
+                      <Box
+                        key={card.card}
+                        sx={{
+                          mx: 1,
+                        }}
+                      >
                         <GameCard
                           moves={card.moves}
                           name={card.card}
@@ -104,7 +134,12 @@ function Settings() {
               </Card>
             </Box>
           ))}
-          <Box display="flex" mt={3}>
+          <Box
+            sx={{
+              display: 'flex',
+              mt: 3,
+            }}
+          >
             <Button variant="outlined" color="secondary" component={Link} to="/">
               Back to Menu
             </Button>

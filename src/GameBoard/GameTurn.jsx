@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()(() => ({
   Red: {
     color: '#f44336',
   },
@@ -10,8 +10,8 @@ const useStyles = makeStyles(() => ({
     color: '#2196f3',
   },
 }));
-function GameTurn({ turn, player }) {
-  const classes = useStyles();
+function GameTurn({ turn, player = null }) {
+  const { classes } = useStyles();
   const relativeName = player === turn ? 'Your Turn' : "Opponent's Turn";
   const absoluteName = `${turn}'s Turn`;
   const label = player ? relativeName : absoluteName;
@@ -23,12 +23,5 @@ function GameTurn({ turn, player }) {
     </Box>
   );
 }
-GameTurn.defaultProps = {
-  player: null,
-};
-GameTurn.propTypes = {
-  turn: PropTypes.oneOf(['Red', 'Blue']).isRequired,
-  player: PropTypes.oneOf(['Red', 'Blue', null]),
-};
 
 export default GameTurn;

@@ -1,7 +1,7 @@
 let meta = null;
 
 function getMetaUncached() {
-  const build = process.env.REACT_APP_BUILD_VERSION || 'unknown';
+  const build = import.meta.env.VITE_BUILD_VERSION || 'unknown';
   const existingUid = localStorage.getItem('uid');
   if (existingUid != null) {
     return { build, uid: existingUid };

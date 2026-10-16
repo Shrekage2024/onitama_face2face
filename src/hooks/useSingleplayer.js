@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSnackbar } from 'notistack';
-import { SinglePlayerGame } from '../onitamalib';
+import { SinglePlayerGame } from 'onitamalib';
 import logger from '../logger';
 import onEvent from '../events';
 import getMeta from '../meta';
@@ -15,8 +15,12 @@ const useSingleplayer = (difficulty, trainingMode) => {
   });
   const { enqueueSnackbar } = useSnackbar();
   const handlers = useMemo(() => {
-    const worker = new Worker(new URL('../ai.worker.js', import.meta.url));
-    const trainer = trainingMode && new Worker(new URL('../trainer.worker.js', import.meta.url));
+    const worker = new Worker(new URL('../ai.worker.js', import.meta.url), { type: 'module' });
+    const trainer =
+      trainingMode &&
+      new Worker(new URL('../trainer.worker.js', import.meta.url), {
+        type: 'module',
+      });
     const onError = (err) => enqueueSnackbar(err, { variant: 'error', persist: false });
     const requestAiMove = (req) => worker.postMessage(req);
     const requestMoveRanking = (req) => {

@@ -1,6 +1,6 @@
 #[cfg(feature = "benchmark")]
 use indicatif::ProgressBar;
-use instant::Duration;
+use web_time::Duration;
 
 use crate::{alphabeta, minimax};
 

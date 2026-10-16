@@ -29,7 +29,8 @@ pub fn get_useragent(req: &HttpRequest) -> String {
         Some(Ok(value)) => value,
         Some(Err(_)) => "Unknown Browser",
         None => "Unknown Browser",
-    }.to_string();
+    }
+    .to_string();
 }
 
 pub fn get_ip(req: &HttpRequest) -> String {

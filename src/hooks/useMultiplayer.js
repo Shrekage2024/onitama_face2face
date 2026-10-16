@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSnackbar } from 'notistack';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { WEBSOCKET_BASE } from '../config';
-import { MultiplayerGame } from '../onitamalib';
+import { MultiplayerGame } from 'onitamalib';
 import logger from '../logger';
 import onEvent from '../events';
 import getMeta from '../meta';
@@ -15,10 +15,10 @@ const useMultiplayer = (roomId, isAi) => {
   const { enqueueSnackbar } = useSnackbar();
   // Toggle this to force a reconnect
   const [reconnectVal, setReconnectVal] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const reconnect = useCallback(() => {
     setReconnectVal((current) => !current);
-  }, [setReconnectVal, state?.roomId, history]);
+  }, [setReconnectVal]);
   useEffect(() => {
     let mounted = true;
     const setStateMounted = (val) => {
@@ -60,13 +60,13 @@ const useMultiplayer = (roomId, isAi) => {
       mounted = false;
       sock.close(1000);
     };
-  }, [enqueueSnackbar, roomId, history, reconnectVal, isAi]);
+  }, [enqueueSnackbar, roomId, reconnectVal, isAi]);
   const stateRoomId = state?.roomId;
   useEffect(() => {
     if (stateRoomId && !roomId) {
-      history.replace(`/r/${stateRoomId}`);
+      navigate(`/r/${stateRoomId}`, { replace: true });
     }
-  }, [history, roomId, stateRoomId, checkUpdate]);
+  }, [navigate, roomId, stateRoomId]);
   logger.log(state);
   return { state, reconnect, ...handlers };
 };

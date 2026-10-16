@@ -134,7 +134,11 @@ fn test_card_index_roundtrip() {
     for card in Card::into_enum_iter() {
         let idx = card.index();
         let recovered = Card::from(idx);
-        assert_eq!(card, recovered, "Card index roundtrip failed for {:?}", card);
+        assert_eq!(
+            card, recovered,
+            "Card index roundtrip failed for {:?}",
+            card
+        );
     }
 }
 
@@ -146,7 +150,12 @@ fn test_card_indices_unique() {
     let mut indices = HashSet::new();
     for card in Card::into_enum_iter() {
         let idx = card.index();
-        assert!(indices.insert(idx), "Duplicate index {} for card {:?}", idx, card);
+        assert!(
+            indices.insert(idx),
+            "Duplicate index {} for card {:?}",
+            idx,
+            card
+        );
     }
 }
 

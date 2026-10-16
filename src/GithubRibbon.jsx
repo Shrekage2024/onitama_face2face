@@ -1,8 +1,7 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from 'tss-react/mui';
 import githubRibbonImage from './resources/forkme_right_gray.png';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
   link: {
     position: 'absolute',
     top: '0px',
@@ -10,7 +9,7 @@ const useStyles = makeStyles({
   },
 });
 function GithubRibbon() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <a
       href="https://github.com/jackadamson/onitama"

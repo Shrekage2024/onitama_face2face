@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import useLocalGame from './hooks/useLocalGame';
 import Loading from './Loading';
 import GameBoard from './GameBoard';
+import FaceToFaceBoard from './GameBoard/FaceToFaceBoard';
 
 const getMoves = (src, card, turn) => {
   if (!src || !card) {
@@ -17,7 +18,7 @@ const getMoves = (src, card, turn) => {
   return (x, y) => dstSet.has(`${x},${y}`);
 };
 
-function LocalGame() {
+function LocalGame({ faceToFace = false }) {
   const { enqueueSnackbar } = useSnackbar();
   const { state, playMove, reset } = useLocalGame();
   const [card, setCard] = useState(null);
@@ -64,8 +65,9 @@ function LocalGame() {
   }
   const { blueCards, redCards, spare, turn, grid, canMove, winner } = state;
   const isMoveValid = getMoves(src, card, turn);
+  const Board = faceToFace ? FaceToFaceBoard : GameBoard;
   return (
-    <GameBoard
+    <Board
       src={src}
       setSrc={setSrc}
       card={card}

@@ -5,8 +5,8 @@ extern crate slog;
 extern crate slog_json;
 
 use std::convert::TryFrom;
-use std::{env, path};
 use std::sync::Mutex;
+use std::{env, path};
 
 use actix::prelude::*;
 use actix_files::Files;

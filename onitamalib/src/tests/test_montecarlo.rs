@@ -2,7 +2,7 @@ use super::utils;
 use crate::{montecarlo, GameState};
 #[cfg(feature = "benchmark")]
 use indicatif::ProgressBar;
-use instant::Duration;
+use web_time::Duration;
 
 #[test]
 #[cfg(feature = "benchmark")]

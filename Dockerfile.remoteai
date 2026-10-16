@@ -1,38 +1,30 @@
-FROM rust:1.53 AS client-builder
+FROM node:22-bookworm AS client-builder
 ARG BUILD_VERSION
 
-# Until feature(array_map) makes it to stable, requires nightly toolchain
-RUN rustup default nightly
+# Rust toolchain (same version as the server build) for compiling the game library to WebAssembly
+COPY --from=rust:1.97 /usr/local/rustup /usr/local/rustup
+COPY --from=rust:1.97 /usr/local/cargo /usr/local/cargo
+ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/usr/local/cargo PATH=/usr/local/cargo/bin:$PATH
+RUN rustup target add wasm32-unknown-unknown
 
 WORKDIR /src
 
-# Install Node and Yarn from fnm
-RUN cargo install fnm
-COPY .nvmrc ./
-RUN fnm install
-RUN fnm exec npm install --global yarn
-
 # Install node package dependencies
 COPY yarn.lock package.json ./
-RUN fnm exec yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
 COPY ./ /src/
 
-# Build react app including wasm library
-ENV GENERATE_SOURCEMAP=false
-ENV REACT_APP_BUILD_VERSION=${BUILD_VERSION}
-RUN fnm exec yarn run build --production
+# Build wasm library, then the react app
+ENV VITE_BUILD_VERSION=${BUILD_VERSION}
+RUN yarn build-native-release && yarn build
 
-FROM rust:1.53 AS server-builder
-
-# Until feature(array_map) makes it to stable, requires nightly toolchain
-RUN rustup default nightly
+FROM rust:1.97 AS server-builder
 
 RUN apt-get update && apt-get install -y musl-dev musl-tools
 # Install musl target for statically linked binaries
 RUN rustup target add x86_64-unknown-linux-musl
 
-# Install node package dependencies
 WORKDIR /src
 COPY Cargo.toml Cargo.lock /src/
 COPY onitamalib /src/onitamalib

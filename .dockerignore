@@ -7,3 +7,5 @@ build/**
 node_modules/**
 onitamalib/target/**
 target/**
+dev-dist/**
+src/onitamalib/**

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useSnackbar } from 'notistack';
-import { LocalGame } from '../onitamalib';
+import { LocalGame } from 'onitamalib';
 import onEvent from '../events';
 import getMeta from '../meta';
 
