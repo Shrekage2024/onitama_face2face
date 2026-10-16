@@ -1,16 +1,19 @@
-import React from 'react';
-import { Box, Button, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+import { Link } from 'react-router';
 import useStyles from './menuStyles';
 
 function AiSelect() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Box className={classes.outer}>
       <Typography variant="h2" className={classes.centeredHeading}>
         Select an AI to train with
       </Typography>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/t/easy"
@@ -38,7 +41,11 @@ function AiSelect() {
       >
         Hard
       </Button>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/"

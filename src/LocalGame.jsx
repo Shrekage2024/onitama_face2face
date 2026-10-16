@@ -1,5 +1,4 @@
-import React, { useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useCallback, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import useLocalGame from './hooks/useLocalGame';
 import Loading from './Loading';
@@ -19,7 +18,7 @@ const getMoves = (src, card, turn) => {
   return (x, y) => dstSet.has(`${x},${y}`);
 };
 
-function LocalGame({ faceToFace }) {
+function LocalGame({ faceToFace = false }) {
   const { enqueueSnackbar } = useSnackbar();
   const { state, playMove, reset } = useLocalGame();
   const [card, setCard] = useState(null);
@@ -87,13 +86,5 @@ function LocalGame({ faceToFace }) {
     />
   );
 }
-
-LocalGame.defaultProps = {
-  faceToFace: false,
-};
-LocalGame.propTypes = {
-  // Lay out the board for two players sitting across from each other
-  faceToFace: PropTypes.bool,
-};
 
 export default LocalGame;

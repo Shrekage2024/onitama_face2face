@@ -1,15 +1,18 @@
-import React from 'react';
-import { Box, Button, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+import { Link } from 'react-router';
 import useStyles from './menuStyles';
 import GithubRibbon from './GithubRibbon';
 
 function AiSelect() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Box className={classes.outer}>
       <Typography variant="h2">Player vs AI</Typography>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/ai/easy"
@@ -37,7 +40,11 @@ function AiSelect() {
       >
         Hard
       </Button>
-      <Box m={1} />
+      <Box
+        sx={{
+          m: 1,
+        }}
+      />
       <Button
         component={Link}
         to="/"

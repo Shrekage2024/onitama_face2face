@@ -1,9 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
-import { PointPropType } from './props';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   svg: {
     position: 'absolute',
     width: '320px',
@@ -12,8 +9,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 const radToDeg = 180 / Math.PI;
-function LastMove({ lastMove, redOriented }) {
-  const classes = useStyles();
+function LastMove({ lastMove = null, redOriented }) {
+  const { classes } = useStyles();
   if (!lastMove) {
     return null;
   }
@@ -49,15 +46,5 @@ function LastMove({ lastMove, redOriented }) {
     </svg>
   );
 }
-LastMove.defaultProps = {
-  lastMove: null,
-};
-LastMove.propTypes = {
-  redOriented: PropTypes.bool.isRequired,
-  lastMove: PropTypes.shape({
-    dst: PointPropType.isRequired,
-    src: PointPropType.isRequired,
-  }),
-};
 
 export default LastMove;

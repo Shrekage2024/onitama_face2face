@@ -1,11 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { Box, makeStyles, Paper, Tooltip } from '@material-ui/core';
+import { Box, Paper, Tooltip } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessPawn, faChessKing, faSkull, faStar } from '@fortawesome/free-solid-svg-icons';
 import Color from 'color';
-import { PointPropType } from './props';
 
 const icons = {
   Empty: null,
@@ -14,7 +11,7 @@ const icons = {
   RedPawn: <FontAwesomeIcon icon={faChessPawn} color="#f44336" size="3x" />,
   RedKing: <FontAwesomeIcon icon={faChessKing} color="#f44336" size="3x" />,
 };
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   selected: {
     borderColor: theme.palette.primary.main,
   },
@@ -53,7 +50,7 @@ const tilePlayer = {
 };
 
 function Skull() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Tooltip title="likely lose">
       <Box className={classes.rankMarker}>
@@ -64,7 +61,7 @@ function Skull() {
 }
 
 function Star() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <Tooltip title="guaranteed win">
       <Box className={classes.rankMarker}>
@@ -78,16 +75,16 @@ function GameSquare({
   tile,
   x,
   y,
-  src,
+  src = null,
   setSrc,
-  turn,
+  turn = null,
   move,
   isValid,
-  lastMove,
+  lastMove = null,
   ranking,
-  flipBluePieces,
+  flipBluePieces = false,
 }) {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const player = tilePlayer[tile];
   const activePlayer = turn === player;
   const selected = x === src?.x && y === src?.y;
@@ -98,13 +95,14 @@ function GameSquare({
   return (
     <Paper
       variant="outlined"
-      component={Box}
-      width="64px"
-      height="64px"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      className={clsx({
+      sx={{
+        width: '64px',
+        height: '64px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      className={cx({
         [classes.selected]: selected,
         [classes.selectable]: selectable || isValid,
         [classes.valid]: isValid,
@@ -130,30 +128,5 @@ function GameSquare({
     </Paper>
   );
 }
-GameSquare.defaultProps = {
-  src: null,
-  turn: null,
-  lastMove: null,
-  flipBluePieces: false,
-};
-GameSquare.propTypes = {
-  tile: PropTypes.oneOf(['Empty', 'BluePawn', 'BlueKing', 'RedPawn', 'RedKing']).isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  src: PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-  }),
-  setSrc: PropTypes.func.isRequired,
-  turn: PropTypes.oneOf(['Red', 'Blue', null]),
-  move: PropTypes.func.isRequired,
-  isValid: PropTypes.bool.isRequired,
-  lastMove: PropTypes.shape({
-    dst: PointPropType.isRequired,
-    src: PointPropType.isRequired,
-  }),
-  ranking: PropTypes.number.isRequired,
-  flipBluePieces: PropTypes.bool,
-};
 
 export default GameSquare;

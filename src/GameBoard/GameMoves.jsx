@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
+import { memo } from 'react';
+import { Box } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 import * as R from 'ramda';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme, { inverted }) => ({
   origin: {
     backgroundColor: theme.palette.primary.light,
   },
@@ -24,18 +23,18 @@ const useStyles = makeStyles((theme) => ({
   directionRight: {
     backgroundColor: theme.palette.direction.right,
   },
-  grid: ({ inverted }) => ({
+  grid: {
     display: 'flex',
     flexDirection: inverted ? 'column-reverse' : 'column',
-  }),
-  row: ({ inverted }) => ({
+  },
+  row: {
     display: 'flex',
     flexDirection: inverted ? 'row-reverse' : 'row',
-  }),
+  },
 }));
 
 function GameMoves({ moves, inverted, direction }) {
-  const classes = useStyles({ inverted });
+  const { classes, cx } = useStyles({ inverted });
   const moveSet = new Set(moves.map(({ x, y }) => `${x},${y}`));
   const indexes = [-2, -1, 0, 1, 2];
   return (
@@ -48,7 +47,7 @@ function GameMoves({ moves, inverted, direction }) {
             return (
               <Box
                 key={keyed}
-                className={clsx({
+                className={cx({
                   [classes.moveCell]: true,
                   [classes.origin]: x === 0 && y === 0,
                   [classes.directionBalanced]: accessible && direction === 'Balanced',
@@ -63,14 +62,4 @@ function GameMoves({ moves, inverted, direction }) {
     </Box>
   );
 }
-GameMoves.propTypes = {
-  inverted: PropTypes.bool.isRequired,
-  moves: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  direction: PropTypes.string.isRequired,
-};
-export default React.memo(GameMoves, R.equals);
+export default memo(GameMoves, R.equals);

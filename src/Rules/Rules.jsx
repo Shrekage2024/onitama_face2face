@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Button } from '@material-ui/core';
+import { Link } from 'react-router';
+import { Box, Button } from '@mui/material';
 import Markdown from './Markdown';
 import boardScreenshot from './screenshots/board.png';
 import cardScreenshot from './screenshots/card.png';
@@ -71,18 +70,41 @@ If a player moves their **king** to the **starting square** of the opponent (the
 
 function Rules() {
   return (
-    <Box m={2}>
-      <Button component={Link} to="/" variant="outlined">
+    <Box
+      sx={{
+        m: 2,
+      }}
+    >
+      <Button color="inherit" component={Link} to="/" variant="outlined">
         Back
       </Button>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Box maxWidth="720px" width="100%">
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            maxWidth: '720px',
+            width: '100%',
+          }}
+        >
           <Markdown>{rules}</Markdown>
-          <Box display="flex">
+          <Box
+            sx={{
+              display: 'flex',
+            }}
+          >
             <Button variant="outlined" color="secondary" component={Link} to="/">
               Back to Menu
             </Button>
-            <Box flexGrow={1} />
+            <Box
+              sx={{
+                flexGrow: 1,
+              }}
+            />
             <Button variant="contained" color="primary" component={Link} to="/ai/easy">
               Play an Easy Game
             </Button>

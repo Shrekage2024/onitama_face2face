@@ -24,6 +24,8 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'no-unused-vars': 'warn',
+      // React 19 no longer checks propTypes, so they are not used
+      'react/prop-types': 'off',
     },
   },
   {

@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useCallback,
   useContext,
@@ -7,7 +7,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import PropTypes from 'prop-types';
 import logger from './logger';
 import { registerValidSW } from './serviceWorkerRegistration';
 
@@ -50,10 +49,6 @@ export function UpdateManager({ children }) {
   );
   return <UpdateContext.Provider value={value}>{children}</UpdateContext.Provider>;
 }
-
-UpdateManager.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 export function useAppUpdater() {
   const { updateAvailable, checkUpdate } = useContext(UpdateContext);

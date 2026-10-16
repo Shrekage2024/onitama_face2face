@@ -32,7 +32,12 @@ onitama/
 │   │   ├── rooms.rs     # WebSocket room management
 │   │   └── routes.rs    # HTTP endpoints
 │   └── Cargo.toml
-├── static/              # Frontend assets
+├── src/                 # React frontend (Vite, MUI, React Router)
+│   ├── GameBoard/       # Board components (GameBoard, FaceToFaceBoard, ...)
+│   ├── hooks/           # Game mode hooks wrapping the wasm bindings
+│   └── onitamalib/      # Generated wasm bindings (gitignored)
+├── index.html           # Vite entry point
+├── vite.config.mjs      # Vite config (wasm, PWA service worker)
 ├── Dockerfile           # Container build
 └── README.md
 ```
@@ -81,9 +86,16 @@ cargo build -p onitamalib
 # Library + server
 cargo build
 
-# WebAssembly (requires wasm-pack)
-cd onitamalib
-wasm-pack build --target web --features web
+# WebAssembly bindings for the frontend (requires wasm-pack and the
+# wasm32-unknown-unknown target), output to src/onitamalib
+yarn build-native-dev
+
+# Frontend
+yarn install
+yarn start            # dev server on http://localhost:3000
+yarn start-local-ai   # dev server with the AI running in the browser
+yarn build            # production build to ./build
+yarn lint
 
 # Docker
 docker build -t onitama .
@@ -167,8 +179,10 @@ cargo clippy --fix --lib --allow-dirty
 ### Benchmark Tests
 Benchmark tests require the `indicatif` dependency and `benchmark` feature flag. They're feature-gated to avoid compilation errors.
 
-### WASM Bindings
-Some older WASM bindings (v0.2.81) will be rejected by future Rust versions. Consider upgrading when possible.
+### Frontend Conventions
+- React 19: no `propTypes`/`defaultProps`, use default parameter values
+- Styles use `makeStyles` from `tss-react/mui` (returns `{ classes, cx }`) or the `sx` prop
+- Env vars are `VITE_*` and read via `import.meta.env`
 
 ## Quick Reference
 
@@ -225,6 +239,6 @@ Tests use explicit board setups rather than random generation for reproducibilit
 
 ---
 
-**Last Updated**: January 2025
-**Rust Edition**: 2018
+**Last Updated**: October 2026
+**Rust Edition**: 2021
 **Test Coverage**: 70+ unit tests

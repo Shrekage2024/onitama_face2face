@@ -1,8 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import ReactMarkdown from 'markdown-to-jsx';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography, Link } from '@material-ui/core';
+import { withStyles } from 'tss-react/mui';
+import { Typography, Link } from '@mui/material';
 
 const styles = (theme) => ({
   listItem: {
@@ -30,21 +28,25 @@ const options = {
     h3: { component: Typography, props: { gutterBottom: true, variant: 'h6' } },
     h4: {
       component: Typography,
-      props: { gutterBottom: true, variant: 'caption', paragraph: true },
+      props: { gutterBottom: true, variant: 'caption', sx: { display: 'block', mb: 2 } },
     },
-    p: { component: Typography, props: { paragraph: true } },
+    p: { component: Typography, props: { sx: { mb: 2 } } },
     a: { component: Link },
     img: {
-      component: withStyles(styles)(({ classes, alt, ...props }) => (
-        <img alt="alt" {...props} className={classes.image} />
-      )),
+      component: withStyles(
+        ({ classes, alt, ...props }) => <img alt="alt" {...props} className={classes.image} />,
+        styles,
+      ),
     },
     li: {
-      component: withStyles(styles)(({ classes, ...props }) => (
-        <li className={classes.listItem}>
-          <Typography component="span" {...props} />
-        </li>
-      )),
+      component: withStyles(
+        ({ classes, ...props }) => (
+          <li className={classes.listItem}>
+            <Typography component="span" {...props} />
+          </li>
+        ),
+        styles,
+      ),
     },
   },
 };
@@ -52,7 +54,4 @@ const options = {
 function Markdown({ children }) {
   return <ReactMarkdown options={options}>{children}</ReactMarkdown>;
 }
-Markdown.propTypes = {
-  children: PropTypes.string.isRequired,
-};
 export default Markdown;

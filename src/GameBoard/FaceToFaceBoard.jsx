@@ -1,11 +1,9 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
-import clsx from 'clsx';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { Link } from 'react-router';
+import { Box, Button, Typography } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 import GameCard from './GameCard';
 import GameGrid from './GameGrid';
-import { CardPropType, PointPropType } from './props';
 
 const colors = {
   Red: '#f44336',
@@ -15,7 +13,7 @@ const colors = {
 // Largest scale the board is allowed to grow to on big screens
 const MAX_SCALE = 2;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   viewport: {
     position: 'fixed',
     inset: 0,
@@ -123,12 +121,22 @@ function statusText(color, turn, winner) {
   return turn === color ? 'Your turn' : "Opponent's turn";
 }
 
-function PlayerZone({ color, turn, winner, cards, spare, card, setCard, canMove, discard }) {
-  const classes = useStyles();
+function PlayerZone({
+  color,
+  turn,
+  winner = null,
+  cards,
+  spare,
+  card = null,
+  setCard,
+  canMove,
+  discard,
+}) {
+  const { classes, cx } = useStyles();
   const isTurn = turn === color && !winner;
   return (
     <Box
-      className={clsx({
+      className={cx({
         [classes.zone]: true,
         [classes.rotated]: color === 'Blue',
         [classes.inactive]: !isTurn && !winner,
@@ -151,13 +159,13 @@ function PlayerZone({ color, turn, winner, cards, spare, card, setCard, canMove,
           />
         ))}
         <Box
-          className={clsx({
+          className={cx({
             [classes.spare]: true,
             // Keep the space reserved so the layout doesn't shift between turns
             [classes.spareHidden]: turn !== color,
           })}
         >
-          <Typography variant="caption" color="textSecondary">
+          <Typography variant="caption" color="text.secondary">
             Next card
           </Typography>
           <GameCard
@@ -170,7 +178,11 @@ function PlayerZone({ color, turn, winner, cards, spare, card, setCard, canMove,
           />
         </Box>
       </Box>
-      <Box mt={1}>
+      <Box
+        sx={{
+          mt: 1,
+        }}
+      >
         <Typography variant="h5" className={classes.status} style={{ color: colors[color] }}>
           {statusText(color, turn, winner)}
         </Typography>
@@ -178,44 +190,29 @@ function PlayerZone({ color, turn, winner, cards, spare, card, setCard, canMove,
     </Box>
   );
 }
-PlayerZone.defaultProps = {
-  winner: null,
-  card: null,
-};
-PlayerZone.propTypes = {
-  color: PropTypes.oneOf(['Red', 'Blue']).isRequired,
-  turn: PropTypes.oneOf(['Red', 'Blue']).isRequired,
-  winner: PropTypes.oneOf(['Red', 'Blue', null]),
-  cards: PropTypes.arrayOf(CardPropType).isRequired,
-  spare: CardPropType.isRequired,
-  card: CardPropType,
-  setCard: PropTypes.func.isRequired,
-  canMove: PropTypes.bool.isRequired,
-  discard: PropTypes.func.isRequired,
-};
 
 // Layout for two players sitting across from each other with a tablet between
 // them. Red sits at the bottom, Blue at the top, and Blue's cards are rotated
 // to face them.
 function FaceToFaceBoard({
-  src,
+  src = null,
   setSrc,
   grid,
-  winner,
+  winner = null,
   turn,
   spare,
   blueCards,
   redCards,
   setCard,
-  card,
+  card = null,
   canMove,
-  lastMove,
+  lastMove = null,
   isMoveValid,
   move,
   discard,
   reset,
 }) {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { viewportRef, contentRef, scale } = useFitScale();
   const zone = (color, cards) => (
     <PlayerZone
@@ -233,7 +230,7 @@ function FaceToFaceBoard({
   return (
     <>
       <Box className={classes.home}>
-        <Button component={Link} to="/" size="small">
+        <Button color="inherit" component={Link} to="/" size="small">
           Home
         </Button>
       </Box>
@@ -270,32 +267,5 @@ function FaceToFaceBoard({
     </>
   );
 }
-FaceToFaceBoard.defaultProps = {
-  card: null,
-  src: null,
-  winner: null,
-  lastMove: null,
-};
-FaceToFaceBoard.propTypes = {
-  src: PointPropType,
-  setSrc: PropTypes.func.isRequired,
-  grid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string).isRequired).isRequired,
-  winner: PropTypes.oneOf(['Red', 'Blue', null]),
-  reset: PropTypes.func.isRequired,
-  turn: PropTypes.oneOf(['Red', 'Blue']).isRequired,
-  spare: CardPropType.isRequired,
-  blueCards: PropTypes.arrayOf(CardPropType).isRequired,
-  redCards: PropTypes.arrayOf(CardPropType).isRequired,
-  lastMove: PropTypes.shape({
-    dst: PointPropType.isRequired,
-    src: PointPropType.isRequired,
-  }),
-  setCard: PropTypes.func.isRequired,
-  card: CardPropType,
-  canMove: PropTypes.bool.isRequired,
-  isMoveValid: PropTypes.func.isRequired,
-  move: PropTypes.func.isRequired,
-  discard: PropTypes.func.isRequired,
-};
 
 export default FaceToFaceBoard;

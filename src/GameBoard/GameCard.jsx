@@ -1,11 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, Paper, Typography } from '@material-ui/core';
-import clsx from 'clsx';
+import { Paper, Typography } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 import GameMove from './GameMoves';
 
-const useStyles = makeStyles((theme) => ({
-  card: ({ enabled, spare, inverted }) => ({
+const useStyles = makeStyles()((theme, { enabled, spare, inverted }) => ({
+  card: {
     display: 'flex',
     flexDirection: inverted ? 'column-reverse' : 'column',
     flexBasis: spare ? null : '50%',
@@ -19,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: 'solid',
     borderWidth: '1px',
     [inverted ? 'borderBottomColor' : 'borderTopColor']: theme.palette.primary.main,
-  }),
+  },
   selected: {
     borderColor: theme.palette.primary.main,
   },
@@ -46,16 +44,16 @@ function GameCard({
   name,
   direction,
   setCard,
-  selected,
-  enabled,
+  selected = false,
+  enabled = false,
   moves,
-  spare,
-  canMove,
-  discard,
-  inverted,
-  showPlayed,
+  spare = false,
+  canMove = true,
+  discard = () => {},
+  inverted = false,
+  showPlayed = false,
 }) {
-  const classes = useStyles({ enabled, spare, inverted });
+  const { classes, cx } = useStyles({ enabled, spare, inverted });
   const handler = () => {
     if (enabled && !canMove) {
       discard(name);
@@ -65,7 +63,7 @@ function GameCard({
   };
   return (
     <Paper
-      className={clsx({
+      className={cx({
         [classes.card]: true,
         [classes.spare]: spare,
         [classes.noMoves]: enabled && !canMove,
@@ -86,32 +84,5 @@ function GameCard({
     </Paper>
   );
 }
-GameCard.defaultProps = {
-  enabled: false,
-  selected: false,
-  spare: false,
-  inverted: false,
-  canMove: true,
-  discard: () => {},
-  showPlayed: false,
-};
-GameCard.propTypes = {
-  enabled: PropTypes.bool,
-  selected: PropTypes.bool,
-  name: PropTypes.string.isRequired,
-  direction: PropTypes.string.isRequired,
-  setCard: PropTypes.func.isRequired,
-  moves: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  spare: PropTypes.bool,
-  canMove: PropTypes.bool,
-  discard: PropTypes.func,
-  inverted: PropTypes.bool,
-  showPlayed: PropTypes.bool,
-};
 
 export default GameCard;

@@ -1,10 +1,9 @@
-import React, { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
-import { CssBaseline } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
-import { HashRouter } from 'react-router-dom';
-import { Route, Switch } from 'react-router';
+import { HashRouter, Route, Routes } from 'react-router';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -16,12 +15,14 @@ import AiSelect from './AiSelect';
 import TrainingSelect from './TrainingSelect';
 import { UpdateManager } from './updateManager';
 
-const LocalGame = React.lazy(() => import('./LocalGame'));
-const RemoteGame = React.lazy(() => import('./RemoteGame'));
-const SinglePlayerGame = React.lazy(() => import('./SinglePlayerGame'));
-const TrainingGame = React.lazy(() => import('./TrainingGame'));
-const Rules = React.lazy(() => import('./Rules'));
-const Settings = React.lazy(() => import('./Settings'));
+const LocalGame = lazy(() => import('./LocalGame'));
+const RemoteGame = lazy(() => import('./RemoteGame'));
+const SinglePlayerGame = lazy(() => import('./SinglePlayerGame'));
+const TrainingGame = lazy(() => import('./TrainingGame'));
+const Rules = lazy(() => import('./Rules'));
+const Settings = lazy(() => import('./Settings'));
+
+const localAi = Boolean(import.meta.env.VITE_LOCAL_AI);
 
 const root = createRoot(document.querySelector('#root'));
 root.render(
@@ -30,64 +31,24 @@ root.render(
       <HashRouter>
         <CssBaseline />
         <SnackbarProvider maxSnack={2}>
-          <Switch>
-            <Route path="/l/" exact>
-              <Suspense fallback={<Loading />}>
-                <LocalGame />
-              </Suspense>
-            </Route>
-            <Route path="/f/" exact>
-              <Suspense fallback={<Loading />}>
-                <LocalGame faceToFace />
-              </Suspense>
-            </Route>
-            <Route path="/help" exact>
-              <Suspense fallback={<Loading />}>
-                <Rules />
-              </Suspense>
-            </Route>
-            <Route path="/settings" exact>
-              <Suspense fallback={<Loading />}>
-                <Settings />
-              </Suspense>
-            </Route>
-            <Route path={['/r/:roomId', '/r/']}>
-              <Suspense fallback={<Loading />}>
-                <RemoteGame />
-              </Suspense>
-            </Route>
-            {import.meta.env.VITE_LOCAL_AI ? (
-              <Route path="/ai/:difficulty">
-                <Suspense fallback={<Loading />}>
-                  <SinglePlayerGame />
-                </Suspense>
-              </Route>
-            ) : (
-              <Route path="/ai/:roomId">
-                <Suspense fallback={<Loading />}>
-                  <RemoteGame isAi />
-                </Suspense>
-              </Route>
-            )}
-            <Route path="/ai">
-              <AiSelect />
-            </Route>
-            {import.meta.env.VITE_LOCAL_AI && (
-              <Route path="/t/:difficulty">
-                <Suspense fallback={<Loading />}>
-                  <TrainingGame />
-                </Suspense>
-              </Route>
-            )}
-            {import.meta.env.VITE_LOCAL_AI && (
-              <Route path="/t">
-                <TrainingSelect />
-              </Route>
-            )}
-            <Route>
-              <Home />
-            </Route>
-          </Switch>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/l" element={<LocalGame />} />
+              <Route path="/f" element={<LocalGame faceToFace />} />
+              <Route path="/help" element={<Rules />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/r/:roomId?" element={<RemoteGame />} />
+              {localAi ? (
+                <Route path="/ai/:difficulty" element={<SinglePlayerGame />} />
+              ) : (
+                <Route path="/ai/:roomId" element={<RemoteGame isAi />} />
+              )}
+              <Route path="/ai" element={<AiSelect />} />
+              {localAi && <Route path="/t/:difficulty" element={<TrainingGame />} />}
+              {localAi && <Route path="/t" element={<TrainingSelect />} />}
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </Suspense>
         </SnackbarProvider>
       </HashRouter>
     </ThemeProvider>

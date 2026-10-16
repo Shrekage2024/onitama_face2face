@@ -1,6 +1,5 @@
-import React, { useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useCallback, useRef } from 'react';
+import { Link } from 'react-router';
 import {
   Box,
   Button,
@@ -8,12 +7,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  makeStyles,
   TextField,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()((theme) => ({
   dialog: {
     padding: theme.spacing(8, 8, 8, 8),
     display: 'flex',
@@ -37,7 +37,7 @@ const titleFromStatus = {
   Errored: 'Game Error',
 };
 function WaitingOverlay({ state: { connection, roomId, error }, reconnect }) {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const ref = useRef();
   const title = titleFromStatus[connection] || connection;
   const isWaiting = connection === 'Waiting';
@@ -58,9 +58,18 @@ function WaitingOverlay({ state: { connection, roomId, error }, reconnect }) {
       <DialogContent className={classes.content}>
         {!isConnecting && !showReconnect && roomId && (
           <>
-            <Box minWidth="280px">
+            <Box
+              sx={{
+                minWidth: '280px',
+              }}
+            >
               <Typography variant="subtitle1">Invite Link</Typography>
-              <Box display="flex" flexDirection="row">
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
                 <TextField
                   inputRef={ref}
                   className={classes.invite}
@@ -68,13 +77,21 @@ function WaitingOverlay({ state: { connection, roomId, error }, reconnect }) {
                   spellCheck={false}
                   variant="outlined"
                 />
-                <Box m={0.5} />
+                <Box
+                  sx={{
+                    m: 0.5,
+                  }}
+                />
                 <Button variant="contained" color="primary" size="small" onClick={copyLink}>
                   Copy
                 </Button>
               </Box>
             </Box>
-            <Box pt={2}>
+            <Box
+              sx={{
+                pt: 2,
+              }}
+            >
               <Typography variant="h5">or</Typography>
             </Box>
           </>
@@ -94,13 +111,5 @@ function WaitingOverlay({ state: { connection, roomId, error }, reconnect }) {
     </Dialog>
   );
 }
-WaitingOverlay.propTypes = {
-  state: PropTypes.shape({
-    connection: PropTypes.string.isRequired,
-    roomId: PropTypes.string,
-    error: PropTypes.string,
-  }).isRequired,
-  reconnect: PropTypes.func.isRequired,
-};
 
 export default WaitingOverlay;

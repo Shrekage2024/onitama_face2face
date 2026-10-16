@@ -1,8 +1,8 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+const baseTheme = createTheme({
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: {
       main: '#6579d4',
       light: '#d7d7d7',
@@ -20,9 +20,30 @@ const theme = createTheme({
       default: '#121115',
     },
   },
-  props: {
+  components: {
     MuiAppBar: {
-      color: 'default',
+      defaultProps: {
+        color: 'default',
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        // Dark mode adds a lightening gradient to elevated Paper since MUI v5, keep the flat look
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+  },
+});
+
+const theme = createTheme(baseTheme, {
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        // MUI v5 changed the body font from body2 to body1, keep the original smaller body text
+        body: baseTheme.typography.body2,
+      },
     },
   },
 });

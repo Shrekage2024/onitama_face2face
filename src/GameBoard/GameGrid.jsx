@@ -1,32 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box, Paper } from '@material-ui/core';
+import { Box, Paper } from '@mui/material';
 import GameSquare from './GameSquare';
-import { PointPropType } from './props';
 import LastMove from './LastMove';
 
 function GameGrid({
   grid,
   isMoveValid,
-  src,
+  src = null,
   setSrc,
-  turn,
+  turn = null,
   move,
-  lastMove,
+  lastMove = null,
   redOriented,
   dstMoveRankings,
-  flipBluePieces,
+  flipBluePieces = false,
 }) {
   return (
     <Paper
-      component={Box}
-      display="flex"
-      flexDirection={redOriented ? 'column' : 'column-reverse'}
-      my={2}
+      sx={{
+        display: 'flex',
+        flexDirection: redOriented ? 'column' : 'column-reverse',
+        my: 2,
+      }}
     >
       <LastMove lastMove={lastMove} redOriented={redOriented} />
       {grid.map((row, y) => (
-        <Box display="flex" flexDirection={redOriented ? 'row' : 'row-reverse'} key={y}>
+        <Box
+          key={y}
+          sx={{
+            display: 'flex',
+            flexDirection: redOriented ? 'row' : 'row-reverse',
+          }}
+        >
           {row.map((tile, x) => (
             <GameSquare
               tile={tile}
@@ -48,31 +52,5 @@ function GameGrid({
     </Paper>
   );
 }
-GameGrid.defaultProps = {
-  src: null,
-  turn: null,
-  lastMove: null,
-  flipBluePieces: false,
-};
-GameGrid.propTypes = {
-  redOriented: PropTypes.bool.isRequired,
-  grid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string).isRequired).isRequired,
-  isMoveValid: PropTypes.func.isRequired,
-  src: PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-  }),
-  setSrc: PropTypes.func.isRequired,
-  // Null turn means opponents turn in multiplayer
-  turn: PropTypes.oneOf(['Red', 'Blue', null]),
-  move: PropTypes.func.isRequired,
-  lastMove: PropTypes.shape({
-    dst: PointPropType.isRequired,
-    src: PointPropType.isRequired,
-  }),
-  dstMoveRankings: PropTypes.objectOf(PropTypes.number).isRequired,
-  // Rotate blue pieces 180 degrees, for players sitting across from each other
-  flipBluePieces: PropTypes.bool,
-};
 
 export default GameGrid;

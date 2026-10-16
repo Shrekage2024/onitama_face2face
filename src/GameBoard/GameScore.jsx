@@ -1,8 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
-function GameScore({ score, stale, playerIsRed }) {
+function GameScore({ score = null, stale = true, playerIsRed }) {
   if (!score) {
     return null;
   }
@@ -11,29 +9,36 @@ function GameScore({ score, stale, playerIsRed }) {
   const outer = playerIsRed ? blue : red;
   const inner = playerIsRed ? red : blue;
   return (
-    <Box maxWidth="0px" height="100%" style={{ opacity: stale ? 0.5 : 1 }}>
-      <Box height="100%" width="8px" bgcolor={outer} overflow="hidden" borderRadius="4px">
+    <Box
+      style={{ opacity: stale ? 0.5 : 1 }}
+      sx={{
+        maxWidth: '0px',
+        height: '100%',
+      }}
+    >
+      <Box
+        sx={{
+          height: '100%',
+          width: '8px',
+          bgcolor: outer,
+          overflow: 'hidden',
+          borderRadius: '4px',
+        }}
+      >
         <Box
-          height="100%"
-          width="8px"
-          bgcolor={inner}
           style={{
             transform: `translateY(${(100 - score).toFixed(0)}%)`,
             transition: 'transform 1s',
+          }}
+          sx={{
+            height: '100%',
+            width: '8px',
+            bgcolor: inner,
           }}
         />
       </Box>
     </Box>
   );
 }
-GameScore.defaultProps = {
-  stale: true,
-  score: null,
-};
-GameScore.propTypes = {
-  playerIsRed: PropTypes.bool.isRequired,
-  stale: PropTypes.bool,
-  score: PropTypes.number,
-};
 
 export default GameScore;
