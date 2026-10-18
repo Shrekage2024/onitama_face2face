@@ -5,10 +5,17 @@ on:
     tags:
       - v*
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Image names must be lowercase, but the repository owner may not be
+      - name: Image name
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/onitama" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v5
       - name: Set up Docker Buildx
@@ -26,7 +33,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/onitama:${{ github.ref_name || 'master' }}
+          tags: ${{ env.IMAGE }}:${{ github.ref_name || 'master' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
