@@ -20,6 +20,7 @@ const useStyles = makeStyles()((theme, { enabled, spare, inverted }) => ({
   },
   selected: {
     borderColor: theme.palette.primary.main,
+    boxShadow: `inset 0 0 0 3px ${theme.palette.primary.main}`,
   },
   spare: {
     flexBasis: null,

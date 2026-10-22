@@ -11,12 +11,31 @@ const icons = {
   RedPawn: <FontAwesomeIcon icon={faChessPawn} color="#f44336" size="3x" />,
   RedKing: <FontAwesomeIcon icon={faChessKing} color="#f44336" size="3x" />,
 };
+const validColor = '#4dd0c1';
 const useStyles = makeStyles()((theme) => ({
   selected: {
     borderColor: theme.palette.primary.main,
+    boxShadow: `inset 0 0 0 3px ${theme.palette.primary.main}`,
+    backgroundColor: Color(theme.palette.background.paper)
+      .mix(Color(theme.palette.primary.main), 0.25)
+      .hex(),
   },
+  // Squares the selected piece can move to, kept bright so they read on a tablet
   valid: {
-    borderColor: theme.palette.secondary.dark,
+    borderColor: validColor,
+    boxShadow: `inset 0 0 0 3px ${validColor}`,
+    backgroundColor: Color(theme.palette.background.paper).mix(Color(validColor), 0.35).hex(),
+  },
+  // A dot on empty destination squares, like chess apps
+  validEmpty: {
+    position: 'relative',
+    '&::after': {
+      content: '""',
+      width: '22px',
+      height: '22px',
+      borderRadius: '50%',
+      backgroundColor: validColor,
+    },
   },
   selectable: {
     '&:hover': {
@@ -92,6 +111,8 @@ function GameSquare({
   const lastSrc = x === lastMove?.src?.x && y === lastMove?.src?.y;
   const lastDst = x === lastMove?.dst?.x && y === lastMove?.dst?.y;
   const moved = lastSrc || lastDst;
+  // Card moves can land on your own pieces, but those aren't legal destinations
+  const showValid = isValid && !activePlayer;
   return (
     <Paper
       variant="outlined"
@@ -103,12 +124,14 @@ function GameSquare({
         alignItems: 'center',
       }}
       className={cx({
-        [classes.selected]: selected,
-        [classes.selectable]: selectable || isValid,
-        [classes.valid]: isValid,
         [classes.redBase]: x === 2 && y === 4,
         [classes.blueBase]: x === 2 && y === 0,
-        [classes.lastMove]: moved && !isValid,
+        [classes.lastMove]: moved && !showValid,
+        [classes.selectable]: selectable || showValid,
+        // Listed last so the highlight wins over the temple square colours
+        [classes.selected]: selected,
+        [classes.valid]: showValid,
+        [classes.validEmpty]: showValid && tile === 'Empty',
       })}
       onClick={() => {
         if (activePlayer) {
